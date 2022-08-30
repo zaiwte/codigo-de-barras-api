@@ -1,0 +1,86 @@
+body{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+div.generate{
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: center;
+  padding: 20px;
+  background: #EEFF8C;
+  border-radius:30px;
+  margin: 10px;
+}
+div.barcodes{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 25px;
+  background: #C2FF8C;
+  border-radius: 30px;
+  margin: 10px;
+}
+div.control{
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 20px;
+  background: #EEFF8C;
+  border-radius:30px;
+  margin: 10px;
+}
+button.quitar{
+  border: none;
+  font-size: 20px;
+  background: #FF3D1E;
+  border-radius: 20px;
+  margin-top: 10px;
+  padding: 10px;
+}
+button.quitar:active{
+    background: #FF8C7A;
+}
+button.generar{
+  border: none;
+  font-size: 20px;
+  background: #17BBD2;
+  border-radius: 20px;
+  margin-top: 10px;
+  padding: 10px;
+}
+button.generar:active{
+    background: #90EBF7;
+}
+button.descargar{
+  border: none;
+  font-size: 20px;
+  background: #5FFF27;
+  border-radius: 20px;
+  margin-right: 40px;
+  padding: 10px;
+}
+button.descargar:active{
+  background: #A1FB82;
+}
+button.reiniciar{
+  border: none;
+  font-size: 20px;
+  background: #FF2F2F;
+  border-radius: 20px;
+  margin-left: 40px;
+  padding: 10px;
+}
+button.reiniciar:active{
+  background: #FF8C8C;
+}
+input.generar{
+  border: none;
+  border-radius: 20px;
+  font-size: 10px;
+  padding: 10px;
+  margin: 10px;
+}

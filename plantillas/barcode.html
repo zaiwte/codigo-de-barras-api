@@ -1,0 +1,7 @@
+{% for text in barcodes %}
+<div class="barcodes" style='text-align: center;'>
+    <img alt='Barcode Generator TEC-IT'
+         src='https://barcode.tec-it.com/barcode.ashx?data={{text}}&code=Code128'/>
+    <button hx-target="#bar" hx-get="/quitar/{{text}}" class="quitar" type="button">quitar</button>
+</div>
+{% endfor %}

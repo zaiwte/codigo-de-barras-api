@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="{{url_for('static',path='/estilos/estilo.css')}}">
+		<script src="https://unpkg.com/htmx.org@1.8.0" integrity="sha384-cZuAZ+ZbwkNRnrKi05G/fjBX+azI9DNOkNYysZ0I/X5ZFgsmMiBXgDZof30F5ofc" crossorigin="anonymous"></script>
+
+		<title>ventas</title>
+	</head>
+
+	<body>
+		<div class="generate" style='text-align: center;'>
+			<div id="input">
+				<input onfocus="this.value=''" value="" name='text' type="form" class="generar" id="codigo">
+			</div>
+			<button hx-target="#bar" hx-post="/sendtext/" hx-trigger="click" hx-include="[name='text']" class="generar" type="button">generar</button>
+		</div>
+
+		<div class="control">
+			<button class="descargar" type="button">descargar</button>
+			<button class="reiniciar" type="button">reiniciar</button>
+        </div>
+
+		<div id="bar"></div>
+
+		<div style='padding-top:8px; text-align:center; font-size:15px; font-family: Source Sans Pro, Arial, sans-serif;'>
+			<!-- back-linking to www.tec-it.com is required -->
+			<a href='https://www.tec-it.com' title='Barcode Software by TEC-IT' target='_blank'>
+				TEC-IT Barcode Generator<br/>
+				<!-- logos are optional -->
+				
+			</a>
+		</div>
+	</body>
+
+</html>
