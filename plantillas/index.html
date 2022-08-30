@@ -19,8 +19,8 @@
 		</div>
 
 		<div class="control">
-			<button class="descargar" type="button">descargar</button>
-			<button class="reiniciar" type="button">reiniciar</button>
+			<button  hx-swap="none"  hx-get="/download" class="descargar" type="button">descargar</button>
+			<button hx-confirm="se eliminaran todos los datos" hx-target="#bar" hx-get="/restart" class="reiniciar" type="button">reiniciar</button>
         </div>
 
 		<div id="bar"></div>

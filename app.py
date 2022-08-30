@@ -1,7 +1,7 @@
 from starlette.applications import Starlette
 from fastapi import FastAPI, Request, Form
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse, Response
+from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 import uvicorn
@@ -9,6 +9,7 @@ import asyncio
 import urllib.request
 import numpy as np
 import os
+import shutil
 
 list_barcodes = []
 
@@ -19,7 +20,12 @@ app = FastAPI(title="generador de codigo de barras")
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get("/", response_class=HTMLResponse)
-async def read_item(request: Request):
+async def page(request: Request):
+    try:
+        os.mkdir('imagenes')
+    except FileExistsError:
+        print("ya se creo...")
+
     return templates.TemplateResponse("index.html", {'request': request})
 
 @app.get("/barcode", response_class=HTMLResponse)
@@ -27,7 +33,7 @@ async def barcode(request: Request):
     return templates.TemplateResponse("barcode.html", {'request': request})
 
 @app.get("/quitar/{barcode}", response_class=HTMLResponse)
-async def barcode(request: Request, barcode):
+async def quit_item(request: Request, barcode):
     list_barcodes.remove(barcode)
     os.remove(f"imagenes/{barcode}.png")
     return templates.TemplateResponse("barcode.html", {'request': request, 'barcodes':list_barcodes})
@@ -35,7 +41,10 @@ async def barcode(request: Request, barcode):
 @app.post("/sendtext/", response_class=HTMLResponse)
 async def create_item(request: Request, text: str = Form()):
     text = text.replace(" ", "-")
-    list_barcodes.append(text)
+    if text not in list_barcodes:
+        list_barcodes.append(text)
+
+    print(list_barcodes)
     img_barcode = urllib.request.urlopen(f'https://barcode.tec-it.com/barcode.ashx?data={text}&code=Code128')
     img = np.array(bytearray(img_barcode.read()), dtype=np.uint8)
     with open(f'imagenes/{text}.png', 'wb') as f:
@@ -43,16 +52,31 @@ async def create_item(request: Request, text: str = Form()):
     # return """<div id="barr">
     #			<input name='text' type="form" class="generar" id="codigo">
     #		  </div>"""
-
     return templates.TemplateResponse("barcode.html", {'request': request, 'barcodes':list_barcodes})
 
 @app.get("/download", response_class=HTMLResponse)
-async def barcode(request: Request):
-    with open(f'imagenes/f.png', 'wb') as f:
-        f.write()
-    #os.mkdir('imagenes')
-    #os.rmdir('imagenes')
-    return templates.TemplateResponse("barcode.html", {'request': request})
+async def download(request: Request):
+    """El siguiente ejemplo muestra el modo de empaquetar (o comprimir) una carpeta de fotografías llamada
+    "imagenes" utilizando el formato "zip". El archivo a crear se llamará "imagenes/imagenes.zip"."""
+    shutil.make_archive(base_name="imagenes", format="zip", base_dir="imagenes")
+
+
+@app.get("/restart", response_class=HTMLResponse)
+async def restart(request: Request):
+    list_barcodes.clear()
+
+    shutil.rmtree('imagenes')
+    try:
+        os.remove('imagenes.zip')
+    except FileNotFoundError:
+        print("ya se ha borrado")
+
+    try:
+        os.mkdir('imagenes')
+    except FileExistsError:
+        print("ya se creo...")
+
+    return templates.TemplateResponse("barcode.html", {'request': request, 'barcodes':list_barcodes})
 
 
 if __name__ == "__main__":
