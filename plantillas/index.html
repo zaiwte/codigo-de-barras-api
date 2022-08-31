@@ -19,9 +19,9 @@
 		</div>
 
 		<div class="control">
-			<button  hx-swap="none"  hx-get="/download" class="descargar" type="button">descargar</button>
+			<button onclick="window.open('/codigos-de-barra')" class="descargar" type="submit">descargar</button>
 			<button hx-confirm="se eliminaran todos los datos" hx-target="#bar" hx-get="/restart" class="reiniciar" type="button">reiniciar</button>
-        </div>
+		</div>
 
 		<div id="bar"></div>
 
