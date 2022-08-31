@@ -1,19 +1,16 @@
 from starlette.applications import Starlette
 from fastapi import FastAPI, Request, Form
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse, FileResponse, StreamingResponse
+from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.templating import Jinja2Templates
-from os import getcwd
-from pydantic import BaseModel
-from io import BytesIO
 import uvicorn
 import asyncio
 import urllib.request
 import numpy as np
 import os
 import shutil
-import zipfile
-import base64
+
+
 
 
 
@@ -25,20 +22,7 @@ app = FastAPI(title="generador de codigo de barras")
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-def zipfiles(file_list):
-    io = BytesIO()
-    zip_sub_dir = "final_archive"
-    zip_filename = "%s.zip" % zip_sub_dir
-    with zipfile.ZipFile(io, mode='w', compression=zipfile.ZIP_DEFLATED) as zip:
-        for fpath in file_list:
-            #print(getcwd() + '\imagenes' + fpath)
-            zip.write("imagenes/" + fpath)
-        # close zip
-        zip.close()
-    return StreamingResponse(
-        iter([io.getvalue()]),
-        media_type="application/zip",
-        headers={"Content-Disposition": f"attachment;filename=%s" % zip_filename})
+
 
 @app.get("/", response_class=HTMLResponse)
 async def page(request: Request):
@@ -77,7 +61,6 @@ async def create_item(request: Request, text: str = Form()):
 
 @app.get("/codigos-de-barra", response_class=FileResponse)
 async def download():
-    #return FileResponse("imagenes.zip", media_type='application/zip', filename="codigos-de-barra")
     shutil.make_archive(base_name="imagenes", format="zip", base_dir="imagenes")
     return FileResponse('imagenes.zip', media_type='application/zip', filename='paquete-codigos-de-barra.zip')
 
